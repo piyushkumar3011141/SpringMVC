@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body bgcolor="blue">
+<body bgcolor="red">
 
 	<h1>Hello User This is your welcome Page</h1>
 	<h2>Hello User This is your username: ${username} </h2>
