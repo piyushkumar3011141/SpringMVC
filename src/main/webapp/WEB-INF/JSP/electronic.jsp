@@ -9,6 +9,7 @@
 <body bgcolor="blue">
 
 	<h1>Hello Developer for electronic</h1>
+	<h2>Hello user this is you name ${user}</h2>
 
 </body>
 </html>

@@ -6,9 +6,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body bgcolor="green">
+<body bgcolor="blue">
 
-	<h1>Hello Developer welcome</h1>
+	<h1>Hello User This is your welcome Page</h1>
+	<h2>Hello User This is your username: ${username} </h2>
+	<h2>Hello User This is your password: ${password} </h2>
+	
 
 </body>
 </html>
