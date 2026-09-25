@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -48,10 +47,8 @@ public class SpringConfig implements WebMvcConfigurer {
 		return sessionFactory;
 	}
 
-	@Bean
-	public HibernateTemplate hibernateTemplate(SessionFactory sessionFactory) {
-		return new HibernateTemplate(sessionFactory);
-	}
+	// hibernateTemplate() bean REMOVED — HibernateTemplate is not
+	// compatible with Hibernate 6 (org.hibernate.criterion.Criterion removed)
 
 	@Bean
 	public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
@@ -61,8 +58,6 @@ public class SpringConfig implements WebMvcConfigurer {
 	@Bean
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-// It specifies that JSTL views should be used.
-//JstlView is a class provided by the Spring framework that is specifically designed to handle JSP pages using JSTL.
 		viewResolver.setViewClass(JstlView.class);
 		viewResolver.setPrefix("/WEB-INF/JSP/");
 		viewResolver.setSuffix(".jsp");
