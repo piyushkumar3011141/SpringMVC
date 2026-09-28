@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import sample.webmvc.entity.User;
 import sample.webmvc.service.UserService;
@@ -42,9 +44,10 @@ public class UserController {
 	
 	
 	@GetMapping("/path/{id}")
-	public String pathVariablle(@PathVariable(name = "id") int id) {
+	@ResponseBody
+	public User pathVariablle(@PathVariable(name = "id") int id) {
 		System.out.println("UserController.pathVariablle : "+id);
-		return "welcome";
+		return userService.getUserById(id);
 	}
 	
 	@GetMapping("/sign-up")
@@ -56,12 +59,11 @@ public class UserController {
 	
 	
 	@PostMapping("/sign-up")
-	public String saveUser(@RequestParam(name = "name") String name,@RequestParam(name = "gender") String gender,@RequestParam(name = "address") String address,Model model) {
+	public String saveUser(@ModelAttribute User user , Model model) {
 		
-		System.out.println("UserController.userLogin : "+name);
-		System.out.println("UserController.userLogin : "+gender);
+		System.out.print("UserController.saveuser");
+		System.out.print(user);
 		
-		User user = new User(name, gender, address) ;
 		
 		userService.saveUser(user);
 		

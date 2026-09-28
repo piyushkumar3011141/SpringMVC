@@ -2,6 +2,7 @@ package sample.webmvc.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,7 +21,7 @@ public class UserDao {
 		Session session = sessionFactory.getCurrentSession();
 
 		session.persist(user);
-
+ 
 		System.out.println("UserDao.saveUser()");
 	}
 
@@ -50,5 +51,11 @@ public class UserDao {
 		if (user != null) {
 			session.remove(user);
 		}
+	}
+
+	public User getUserById(int id) {
+		// TODO Auto-generated method stub
+		System.out.println("UserDao.getUserByID()");
+		return hibernateTemplate.get(User.class , id);
 	}
 }

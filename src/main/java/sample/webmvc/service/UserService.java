@@ -24,4 +24,12 @@ public class UserService {
 		userDao.saveUser(user);
 	}
 
+
+	public User getUserById(int id) {
+		// TODO Auto-generated method stub
+		System.out.print("UserService.usergetbyid: ");
+		return userDao.getUserById(id);
+	}
+	
+
 }
