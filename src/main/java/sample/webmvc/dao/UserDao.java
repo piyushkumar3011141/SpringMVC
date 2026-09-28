@@ -1,9 +1,9 @@
 package sample.webmvc.dao;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import sample.webmvc.entity.User;
@@ -12,43 +12,23 @@ import sample.webmvc.entity.User;
 public class UserDao {
 
 	@Autowired
-	private SessionFactory sessionFactory;
+	 HibernateTemplate hibernateTemplate;
+	
 
-	// CREATE
-	public void saveUser(User user) {
-
-		Session session = sessionFactory.getCurrentSession();
-
-		session.persist(user);
-
-		System.out.println("UserDao.saveUser()");
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
 	}
 
-	// READ
-	public User getUser(int id) {
-
-		Session session = sessionFactory.getCurrentSession();
-
-		return session.get(User.class, id);
+	@Transactional
+	public User saveUser(User user) {
+		hibernateTemplate.save(user);
+		return user;
 	}
 
-	// UPDATE
-	public void updateUser(User user) {
-
-		Session session = sessionFactory.getCurrentSession();
-
-		session.merge(user);
+	public User getUserById(int id) {
+		System.out.println("UserDao.getUserById()");
+		
+		return hibernateTemplate.get(User.class, id);
 	}
 
-	// DELETE
-	public void deleteUser(int id) {
-
-		Session session = sessionFactory.getCurrentSession();
-
-		User user = session.get(User.class, id);
-
-		if (user != null) {
-			session.remove(user);
-		}
-	}
 }
