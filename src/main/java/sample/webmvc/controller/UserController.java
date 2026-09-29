@@ -18,5 +18,4 @@ public class UserController {
 	public String movies() { 
 		return "movies";
 	}
-
 }
