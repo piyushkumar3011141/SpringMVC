@@ -1,62 +1,72 @@
 package sample.webmvc.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import sample.webmvc.entity.User;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
-@ResponseBody
 public class UserController {
-	
-	static Map<Integer, User> users = new HashMap<>();
-	
-	static {
-		
-		users.put(1, new User(1,"Vikas","Male","Noida"));
-		users.put(2, new User(2,"Kunal","Male","GZB"));
-		users.put(3, new User(3,"Nakul","Male","Noida"));
-		users.put(4, new User(4,"Abhi","Male","Gurgaon"));
-		users.put(5, new User(5,"Arjun","Male","Noida"));
-		
-	}
-	
-	
 
-	@GetMapping
-	public User greet() {
-		System.out.println("UserController.greet : ");
-		return new User(99,"Dummy","No","Planet Not Found");
-
-	}
-	@GetMapping("/{id}")
-	public User pathVariablle(@PathVariable(name = "id") int id) {
-		System.out.println("UserController.pathVariablle : " + id);
-		return users.get(id);
+	@GetMapping("/")
+	public String greeting() {
+		System.out.println("WelcomeController.greeting()");
+		return "index";
 	}
 
-	
-	@GetMapping("/all-users")
-	public Map<Integer,User> getAllUsers() {
-		System.out.println("UserController.getAllUsers()");
-		return users;
+	@GetMapping("/req-param")
+	public String createUser(@RequestParam(name = "user", defaultValue = "MY-DEFAULT-NAME") String name, Model model) {
+
+		model.addAttribute("user", name);
+
+		System.out.println("WelcomeController.greeting :" + name);
+
+		return "success";
 	}
 
+	@GetMapping("/path-var/{id}")
+	public String pathVarExample(@PathVariable(name = "id") Long id, Model model) {
 
-	@PostMapping
-	public User saveUser(@RequestBody User user) {
-		System.out.println("UserController.saveUser : ");
-		System.out.println(user);
-		users.put(user.getId(), user);
-		return user;
+		model.addAttribute("user", "Sorry this : " + id + " User is not found in our DB");
+
+		System.out.println("WelcomeController.Pathvar : " + id);
+
+		return "success";
 	}
 
+//	@GetMapping("/getCookie")
+//	public String getCookieVal(@CookieValue(name = "JSESSIONID") String JSESSIONID, Model model) {
+//
+//		model.addAttribute("cookie", "Your JSESSIONID is : " + JSESSIONID);
+//
+//		System.out.println("JSESSIONID : " + JSESSIONID);
+//
+//		return "cookieVal";
+//	}
+	@GetMapping("/getMyCookie")
+	public String getMyCookieVal(@CookieValue(name = "firstCookie" , defaultValue = "DefaultCookie") String firstCookie, Model model) {
+
+		model.addAttribute("firstCookie",  firstCookie);
+
+		System.out.println("getMyCookieVal : " + firstCookie);
+
+		return "cookieVal";
+	}
+
+	@GetMapping("/setCookie")
+	public String setCookieVal(HttpServletResponse response,Model model) {
+
+		Cookie cookie1 = new Cookie("firstCookie", "SensitiveInformation");
+		cookie1.setMaxAge(10);
+		response.addCookie(cookie1);
+		System.out.println("WelcomeController.setCookieVal()");
+
+		return "redirect:/getMyCookie";
+	}
 
 }
